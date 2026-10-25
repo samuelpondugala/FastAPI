@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Task Manager{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', path='/style.css') }}">
+</head>
+<body>
+  <header>
+    <h1><a href="/ui/tasks">Task Manager</a></h1>
+    <nav><a href="/docs">JSON API docs</a></nav>
+  </header>
+
+  {# Child templates fill this in. "extends" + "block" = write the shell once. #}
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

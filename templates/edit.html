@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Edit task #{{ task.id }} - Task Manager{% endblock %}
+
+{% block content %}
+<section>
+  <h2>Edit task #{{ task.id }}</h2>
+  <form action="/ui/tasks/{{ task.id }}/edit" method="post" class="card">
+    <label>Task name
+      <input type="text" name="task_name" value="{{ task.task_name }}"
+             required maxlength="100">
+    </label>
+    <label>Deadline
+      {# <input type="date"> ONLY accepts YYYY-MM-DD. Using strftime('%d %b %Y')
+         here would render an empty field - a classic silent bug. #}
+      <input type="date" name="deadline" value="{{ task.deadline.isoformat() }}"
+             required>
+    </label>
+    <label class="inline">
+      <input type="checkbox" name="completed" value="true"
+             {% if task.completed %}checked{% endif %}>
+      Completed
+    </label>
+    <button type="submit">Save</button>
+    <a href="/ui/tasks" class="cancel">Cancel</a>
+  </form>
+</section>
+{% endblock %}

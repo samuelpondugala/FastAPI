@@ -1,0 +1,9 @@
+# local SQLite database - data, not source
+*.db
+*.sqlite3
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+venv/

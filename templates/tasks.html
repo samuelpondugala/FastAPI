@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}All tasks - Task Manager{% endblock %}
+
+{% block content %}
+<section>
+  <h2>Add a task</h2>
+  <form action="/ui/tasks" method="post" class="card">
+    <label>Task name
+      <input type="text" name="task_name" required maxlength="100"
+             placeholder="e.g. learn Jinja2">
+    </label>
+    <label>Deadline
+      <input type="date" name="deadline" required>
+    </label>
+    <button type="submit">Add task</button>
+  </form>
+</section>
+
+<section>
+  <h2>All tasks ({{ tasks | length }})</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Task</th>
+        <th>Deadline</th>
+        <th>Done</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {# Jinja's for/else: the "else" branch runs when the list is empty. #}
+      {% for task in tasks %}
+      <tr class="{{ 'done' if task.completed else '' }}">
+        <td>{{ task.id }}</td>
+        {# {{ }} auto-escapes, so a task named <script> renders as text. #}
+        <td>{{ task.task_name }}</td>
+        {# deadline is a real date object (Column(Date)), so strftime works. #}
+        <td>{{ task.deadline.strftime('%d %b %Y') }}</td>
+        <td>{{ "Yes" if task.completed else "No" }}</td>
+        <td class="actions">
+          <form action="/ui/tasks/{{ task.id }}/toggle" method="post">
+            <button type="submit" class="subtle">Toggle</button>
+          </form>
+          <a href="/ui/tasks/{{ task.id }}/edit">Edit</a>
+          <form action="/ui/tasks/{{ task.id }}/delete" method="post"
+                onsubmit="return confirm('Delete task {{ task.id }}?');">
+            <button type="submit" class="danger">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="5" class="empty">No tasks yet. Add one above.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}
